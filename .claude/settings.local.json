@@ -6,7 +6,8 @@
       "Bash(uv run mypy:*)",
       "Bash(uv run ruff check:*)",
       "Bash(chmod:*)",
-      "Bash(uv run pytest:*)"
+      "Bash(uv run pytest:*)",
+      "Bash(gh api:*)"
     ]
   }
 }
