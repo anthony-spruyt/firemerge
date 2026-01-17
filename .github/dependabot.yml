@@ -8,9 +8,6 @@ updates:
       interval: daily
       time: "06:00"
       timezone: "Australia/Melbourne"
-    commit-message:
-      prefix: "chore"
-      include: "scope"
     labels:
       - "dependencies"
       - "automated"
@@ -27,9 +24,6 @@ updates:
       interval: daily
       time: "06:00"
       timezone: "Australia/Melbourne"
-    commit-message:
-      prefix: "chore"
-      include: "scope"
     labels:
       - "dependencies"
       - "automated"
@@ -47,9 +41,6 @@ updates:
       interval: daily
       time: "06:00"
       timezone: "Australia/Melbourne"
-    commit-message:
-      prefix: "chore"
-      include: "scope"
     labels:
       - "dependencies"
       - "automated"
