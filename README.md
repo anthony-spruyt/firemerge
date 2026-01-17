@@ -3,6 +3,7 @@
 A customizable tool for semi-automated (not automated!) transaction entry for [Firefly III](https://firefly-iii.org/).
 
 ## Features
+
 - Reads banking and credit card statements in CSV, XMLX and PDF (thanks to the excellent
   [pdfplumber](https://github.com/jsvine/pdfplumber) lib).
 - Allows customization of the columns to parse the data from in these statements, on account-by-account basis.
@@ -15,17 +16,20 @@ A customizable tool for semi-automated (not automated!) transaction entry for [F
 Firemerge operates as a web-based interface that bridges the gap between your bank statements and Firefly III. Here's how it works:
 
 ### 1. **Statement Upload & Parsing**
+
 - Upload your bank statements in CSV, XLSX, or PDF format
 - The system uses configurable parsing rules to extract transaction data
 - Each account can have its own parsing configuration to handle different statement formats
 
 ### 2. **Transaction Matching & Enrichment**
+
 - Firemerge analyzes your uploaded transactions and "guesses" the most relevant past transactions
 - It suggests metadata (description, category, account) based on similar historical transactions
 - You can review and modify these suggestions before importing
 - Firemerge also proposes you relevant transactions when you start entering a new description.
 
 ### 3. **Flexible Configuration**
+
 - **Parser Settings**: Configure how to parse different statement formats for each account
   - Column mapping (date, amount, description, etc.)
   - File format settings (CSV encoding, separators, date formats)
@@ -36,20 +40,24 @@ Firemerge operates as a web-based interface that bridges the gap between your ba
 - **Blacklist**: Filter out unwanted transactions based on description keywords
 
 ### 4. **Semi-Automated Workflow**
+
 1. Upload your bank statement
 2. Review the parsed transactions
 3. Accept or modify the suggested metadata
 4. Push the enriched transactions to Firefly III
 
 ### 5. **Similarity lookup**
+
 - When a transaction is stored into Firefly III by Firemerge, a _Notes_ field is stored to it.
-It contains values from the bank statement, labelled in the account's import config with _Notes Label_.
+  It contains values from the bank statement, labelled in the account's import config with _Notes Label_.
 - When looking for similar transactions, it constructs the same _Notes_ field from a transaction,
-and uses fuzzy search on existing transactions from the same account.
+  and uses fuzzy search on existing transactions from the same account.
 
 ### 6. **Transaction states**
+
 In the UI, when you upload a statement, you will see a list of cards for transaction in different states.
 Those states are:
+
 - **Matched:** a transaction with the same amount was found in Firefly III on the same date, and it has the same
   _Notes_ field; nothing is to be done about it.
 - **Annotated:** a matching (see above) trnsaction was found, but its _Notes_ differ. You can save new _Notes_
@@ -61,12 +69,14 @@ Those states are:
   candidates to copy the metadata from.
 
 ### 7. **Account-Specific Customization**
+
 - Each Firefly III account can have its own parsing and export configuration
 - Predefined configurations are available for some (currently, Ukraininan only) bank formats
 
 The system is designed to be **semi-automated** - it provides intelligent suggestions but always requires human review before importing to ensure accuracy and prevent errors.
 
 ## Unsupported features
+
 - Split transactions
 - Tags
 - Budgets
@@ -79,6 +89,7 @@ All of those could be implemented, they are just out of my use case. PRs are wel
 I really like the [Firefly III](https://firefly-iii.org/) personal finance manager, but
 entring my transactions is always a PITA. [Waterfly III](https://github.com/dreautall/waterfly-iii) simplifies
 this process a lot, but it has its pitfalls:
+
 - it misses transactions sometimes;
 - it doesn't store the notifications, so if you accidentally swipe them out or reboot your phone, you lose them;
 - if there's more than 10 unprocessed notifications, the earlier ones get lost too.
@@ -88,17 +99,17 @@ transation; some transactions, like buying food in my local supermarket, are occ
 enter these details manually, even with all the autocompletes. Using Firefly III rules isn't ideal either, as I'd like to
 have this info when entering the transaction, to be able to correct it if needed.
 
-
 ## Installation
 
-
 1. **Clone the repository:**
+
    ```bash
    git clone https://github.com/lvu/firemerge.git
    cd firemerge
    ```
 
 2. **Create environment file:**
+
    ```bash
    cp env.example .env
    # Edit .env with your Firefly III credentials
@@ -107,6 +118,7 @@ have this info when entering the transaction, to be able to correct it if needed
 3. **Run with Docker Compose:**
 
    Add the following to your _docker_compose.yml_, to the `services` section:
+
    ```
    firemerge:
      build: .
@@ -125,7 +137,6 @@ have this info when entering the transaction, to be able to correct it if needed
    ```
 
    Set up your reverse proxy accordingly, and run your `docker compose up -d`.
-
 
 > [!CAUTION]
 > The web app is intended to be used locally or in a secure environment; do not deploy it on the public web without proper authentication! The frontend communicates with the backend without any kind of authentication!
