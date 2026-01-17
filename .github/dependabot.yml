@@ -1,0 +1,61 @@
+---
+version: 2
+updates:
+  # Devcontainer features
+  - package-ecosystem: "devcontainers"
+    directory: "/"
+    schedule:
+      interval: daily
+      time: "06:00"
+      timezone: "Australia/Melbourne"
+    commit-message:
+      prefix: "chore"
+      include: "scope"
+    labels:
+      - "dependencies"
+      - "automated"
+    open-pull-requests-limit: 10
+    groups:
+      devcontainers:
+        patterns:
+          - "*"
+
+  # GitHub Actions (SHA-pinned)
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: daily
+      time: "06:00"
+      timezone: "Australia/Melbourne"
+    commit-message:
+      prefix: "chore"
+      include: "scope"
+    labels:
+      - "dependencies"
+      - "automated"
+      - "github-actions"
+    open-pull-requests-limit: 10
+    groups:
+      actions:
+        patterns:
+          - "*"
+
+  # npm packages in devcontainer
+  - package-ecosystem: "npm"
+    directory: "/.devcontainer"
+    schedule:
+      interval: daily
+      time: "06:00"
+      timezone: "Australia/Melbourne"
+    commit-message:
+      prefix: "chore"
+      include: "scope"
+    labels:
+      - "dependencies"
+      - "automated"
+      - "npm"
+    open-pull-requests-limit: 10
+    groups:
+      npm-all:
+        patterns:
+          - "*"
