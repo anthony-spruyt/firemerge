@@ -27,3 +27,6 @@ test: test-backend
 
 build-frontend:
 	cd frontend && npm run build
+
+trivy-check:
+	./scripts/trivy-check.sh
