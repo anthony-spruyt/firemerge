@@ -66,7 +66,7 @@ def test_statement_aval(account_primary, utc, currency_usd):
         AccountSettings(parser_settings=aval_settings),
         currency_usd,
     )
-    with patch.object(parser, "_create_reader", return_value=reader):
+    with patch.object(BaseStatementReader, "create", return_value=reader):
         transactions = list(parser.parse())
 
     assert transactions == [
@@ -188,7 +188,7 @@ def test_statement_aval_business_primary(
         AccountSettings(parser_settings=aval_settings),
         currency_usd,
     )
-    with patch.object(parser, "_create_reader", return_value=aval_reader):
+    with patch.object(BaseStatementReader, "create", return_value=aval_reader):
         transactions = sorted(parser.parse(), key=lambda x: x.date, reverse=True)
 
     assert transactions == [
@@ -229,7 +229,7 @@ def test_statement_aval_business_secondary(
         AccountSettings(parser_settings=aval_settings),
         currency_eur,
     )
-    with patch.object(parser, "_create_reader", return_value=aval_reader):
+    with patch.object(BaseStatementReader, "create", return_value=aval_reader):
         transactions = sorted(parser.parse(), key=lambda x: x.date, reverse=True)
 
     assert transactions == [
@@ -308,7 +308,7 @@ def test_statement_privat(account_primary, utc, currency_usd):
         AccountSettings(parser_settings=privat_settings),
         currency_usd,
     )
-    with patch.object(parser, "_create_reader", return_value=reader):
+    with patch.object(BaseStatementReader, "create", return_value=reader):
         transactions = list(parser.parse())
 
     assert transactions == [
