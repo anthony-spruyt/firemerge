@@ -7,6 +7,7 @@
   "includeCoAuthoredBy": true,
   "permissions": {
     "allow": [
+      "Bash(./lint.sh:*)",
       "Bash(gh issue comment:*)",
       "Bash(gh issue create:*)",
       "Bash(gh issue edit:*)",
@@ -46,8 +47,10 @@
       "Bash(git switch:*)",
       "Bash(pre-commit:*)",
       "Bash(mkdir:*)",
+      "Bash(mkdocs:*)",
       "Bash(renovate-config-validator:*)",
       "Bash(test:*)",
+      "mcp__ide__getDiagnostics",
       "mcp__plugin_context7_context7__get-library-docs",
       "mcp__plugin_context7_context7__resolve-library-id",
       "mcp__plugin_context7_context7__query-docs",
@@ -137,11 +140,17 @@
     ]
   },
   "enabledPlugins": {
-    "context7@claude-plugins-official": true,
-    "security-guidance@claude-plugins-official": true,
-    "feature-dev@claude-plugins-official": true,
+    "claude-code-setup@claude-plugins-official": true,
+    "claude-md-management@claude-plugins-official": true,
     "code-review@claude-plugins-official": false,
+    "context7@claude-plugins-official": true,
+    "feature-dev@claude-plugins-official": true,
     "hookify@claude-plugins-official": false,
+    "plugin-dev@claude-plugins-official": true,
+    "pyright-lsp@claude-plugins-official": true,
+    "security-guidance@claude-plugins-official": true,
+    "superpowers@claude-plugins-official": true,
+    "typescript-lsp@claude-plugins-official": true,
     "hookify-plus@hookify-plus": true
   },
   "extraKnownMarketplaces": {
