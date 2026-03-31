@@ -22,7 +22,7 @@ RUN --mount=type=cache,id=apt-cache,target=/var/cache/apt,sharing=locked \
     apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive \
     apt-get upgrade -y -qq && \
-    apt-get -y install -y -qq --no-install-recommends tzdata-legacy && \
+    apt-get -y install -y -qq --no-install-recommends tzdata-legacy curl && \
     truncate -s 0 /var/log/apt/* && \
     truncate -s 0 /var/log/dpkg.log
 
