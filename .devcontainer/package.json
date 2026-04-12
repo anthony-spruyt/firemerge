@@ -4,6 +4,6 @@
   "description": "Global tools for devcontainer",
   "dependencies": {
     "@aikidosec/safe-chain": "1.4.9",
-    "@anthropic-ai/claude-code": "2.1.98"
+    "@anthropic-ai/claude-code": "2.1.104"
   }
 }
