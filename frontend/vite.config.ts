@@ -14,8 +14,14 @@ export default defineConfig({
     sourcemap: true,
     rollupOptions: {
       output: {
-        manualChunks: {
-          vendor: ['react', 'react-dom', '@mui/material'],
+        manualChunks(id) {
+          if (
+            ['react', 'react-dom', '@mui/material'].some((pkg) =>
+              id.includes(`/node_modules/${pkg}/`),
+            )
+          ) {
+            return 'vendor';
+          }
         },
       },
     },
