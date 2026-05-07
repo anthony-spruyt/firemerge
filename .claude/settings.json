@@ -3,15 +3,14 @@
   "env": {
     "CLAUDE_AUTOCOMPACT_PCT_OVERRIDE": "50",
     "BASH_DEFAULT_TIMEOUT_MS": "420000",
-    "BASH_MAX_TIMEOUT_MS": "420000",
-    "CLAUDE_CODE_EFFORT_LEVEL": "medium"
+    "BASH_MAX_TIMEOUT_MS": "420000"
   },
   "alwaysThinkingEnabled": true,
   "fastMode": false,
-  "prefersReducedMotion": true,
-  "model": "opus[1m]",
+  "model": "claude-opus-4-6[1m]",
   "autoUpdatesChannel": "latest",
-  "defaultMode": "acceptEdits",
+  "effortLevel": "xhigh",
+  "viewMode": "verbose",
   "permissions": {
     "defaultMode": "bypassPermissions",
     "allow": [
@@ -101,6 +100,11 @@
       "WebFetch(domain:trivy.dev)"
     ],
     "deny": [
+      "mcp__bravesearch__brave_local_search",
+      "mcp__bravesearch__brave_video_search",
+      "mcp__bravesearch__brave_image_search",
+      "mcp__bravesearch__brave_news_search",
+      "mcp__bravesearch__brave_summarizer",
       "Read(./**/*id_rsa*)",
       "Read(./**/*id_ed25519*)",
       "Read(./**/*id_ecdsa*)",
@@ -149,7 +153,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "file_path=$(jq -r '.tool_input.file_path // .tool_input.notebook_path' < /dev/stdin); npx prettier --write \"$file_path\" 2>/dev/null || true"
+            "command": "file_path=$(jq -r '.tool_input.file_path // .tool_input.notebook_path' < /dev/stdin); case \"$file_path\" in *.md) mdformat \"$file_path\" 2>/dev/null || true ;; *) npx prettier --write \"$file_path\" 2>/dev/null || true ;; esac"
           }
         ]
       }
@@ -165,13 +169,20 @@
     "plugin-dev@claude-plugins-official": false,
     "security-guidance@claude-plugins-official": true,
     "superpowers@claude-plugins-official": true,
-    "hookify-plus@hookify-plus": true
+    "hookify-plus@hookify-plus": true,
+    "caveman@caveman": true
   },
   "extraKnownMarketplaces": {
     "hookify-plus": {
       "source": {
         "source": "github",
         "repo": "anthony-spruyt/hookify-plus"
+      }
+    },
+    "caveman": {
+      "source": {
+        "source": "github",
+        "repo": "JuliusBrussee/caveman"
       }
     }
   }
