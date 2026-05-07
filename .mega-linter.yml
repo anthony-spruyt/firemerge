@@ -11,3 +11,4 @@ EXTENDS:
   - ".mega-linter-base.yml"
 CONFIG_PROPERTIES_TO_APPEND:
   - "ENABLE_LINTERS"
+SPELL_LYCHEE_FILTER_REGEX_EXCLUDE: "(package-lock\\.json|frontend/index\\.html)"
