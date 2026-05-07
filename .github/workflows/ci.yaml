@@ -16,11 +16,6 @@ permissions:
   security-events: "write"
   statuses: "write"
 jobs:
-  lint:
-    uses: "anthony-spruyt/repo-operator/.github/workflows/_lint.yaml@main"
-    secrets: "inherit"
   summary:
-    needs:
-      - "lint"
     if: "always()"
     uses: "anthony-spruyt/repo-operator/.github/workflows/_summary.yaml@main"
