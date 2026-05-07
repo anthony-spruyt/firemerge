@@ -6,7 +6,7 @@ requires = ["uv_build>=0.8.12,<0.9.0"]
 name = "firemerge"
 description = "Firefly merge/import GUI"
 version = "0.1.0"
-requires-python = "~= 3.13.0"
+requires-python = ">= 3.13"
 dependencies = [
     "fastapi >= 0.128.0",
     "httpx ~= 0.27.0",
