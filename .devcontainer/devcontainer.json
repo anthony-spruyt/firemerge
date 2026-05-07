@@ -1,32 +1,47 @@
 {
-  "name": "Ubuntu",
-  "image": "mcr.microsoft.com/devcontainers/base:jammy",
-  "runArgs": ["--env-file", "${localEnv:HOME}/.secrets/.env"],
+  "$schema": "https://raw.githubusercontent.com/devcontainers/spec/main/schemas/devContainer.schema.json",
+  "name": "devcontainer-common",
+  "build": {
+    "dockerfile": "Dockerfile",
+    "args": {
+      "NEXUS_URL": "${localEnv:NEXUS_URL}"
+    }
+  },
+  "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
+  "containerUser": "vscode",
+  "remoteUser": "vscode",
+  "runArgs": [
+    "--env-file",
+    "${localEnv:HOME}/.secrets/.env",
+    "--security-opt",
+    "seccomp=${localWorkspaceFolder}/.devcontainer/podman-seccomp.json",
+    "--device",
+    "/dev/fuse"
+  ],
   "mounts": [
     "source=${localEnv:HOME}/.ssh/agent.sock,target=/ssh-agent,type=bind",
     "source=${localEnv:HOME}/.claude,target=/home/vscode/.claude,type=bind",
-    "source=${localEnv:HOME}/.gitconfig,target=/home/vscode/.gitconfig,type=bind,readonly"
+    "source=${localWorkspaceFolderBasename}-containers,target=/var/lib/containers,type=volume"
   ],
   "containerEnv": {
     "SSH_AUTH_SOCK": "/ssh-agent"
   },
   "features": {
-    "ghcr.io/devcontainers-extra/features/pre-commit": {},
-    "ghcr.io/devcontainers/features/github-cli": {},
-    "ghcr.io/devcontainers/features/docker-in-docker": {},
-    "ghcr.io/devcontainers/features/node": {},
-    "ghcr.io/devcontainers/features/python": {}
+    "ghcr.io/devcontainers-extra/features/renovate-cli": {
+      "version": "43.122.0"
+    }
   },
-  "initializeCommand": "bash -lc 'eval $(keychain --eval --agents ssh id_ed25519); flock -x ~/.ssh/agent.lock -c \"rm -rf $HOME/.ssh/agent.sock; ln -sf $SSH_AUTH_SOCK $HOME/.ssh/agent.sock\"'",
-  "postCreateCommand": "bash -lc \"cd ${containerWorkspaceFolder} && ./.devcontainer/post-create.sh\"",
+  "initializeCommand": "bash ${localWorkspaceFolder}/.devcontainer/initialize.sh",
+  "postCreateCommand": "bash -lc \"cd ${containerWorkspaceFolder} && devcontainer-post-create\"",
   "customizations": {
     "vscode": {
       "extensions": [
-        "redhat.vscode-yaml",
-        "mhutchie.git-graph",
-        "esbenp.prettier-vscode",
         "anthropic.claude-code",
-        "github.vscode-github-actions"
+        "bierner.markdown-mermaid",
+        "blueglassblock.better-json5",
+        "esbenp.prettier-vscode",
+        "mhutchie.git-graph",
+        "redhat.vscode-yaml"
       ]
     }
   }

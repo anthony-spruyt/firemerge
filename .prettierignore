@@ -1,1 +1,6 @@
-frontend/
+*.json
+*.json5
+*.yaml
+*.yml
+*.md
+*.sops.*

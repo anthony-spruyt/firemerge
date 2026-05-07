@@ -1,0 +1,29 @@
+{
+  "version": 4,
+  "configs": {
+    "repo-operator": {
+      "files": [
+        ".devcontainer/devcontainer.json",
+        ".devcontainer/Dockerfile",
+        ".devcontainer/initialize.sh",
+        ".devcontainer/podman-seccomp.json",
+        ".devcontainer/README.md",
+        ".devcontainer/setup-devcontainer.sh",
+        ".editorconfig",
+        ".github/renovate.json5",
+        ".gitignore",
+        ".gitleaks.toml",
+        ".jsonlintrc",
+        ".markdownlint.json",
+        ".markdownlintignore",
+        ".mdformat.toml",
+        ".pre-commit-config.yaml",
+        ".prettierignore",
+        ".prettierrc.yaml",
+        ".vscode/settings.json",
+        ".yamllint.yml",
+        "LICENSE"
+      ]
+    }
+  }
+}
