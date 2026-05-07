@@ -16,7 +16,6 @@ fail() {
   FAILED=$((FAILED + 1))
 }
 
-
 echo "Running devcontainer verification tests..."
 echo ""
 
