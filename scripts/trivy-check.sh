@@ -8,13 +8,13 @@ echo "🔍 Running Trivy security scan on backend dependencies..."
 echo ""
 
 # Check if trivy is installed
-if ! command -v trivy &> /dev/null; then
-    echo "❌ Error: Trivy is not installed."
-    echo ""
-    echo "To install Trivy, run:"
-    echo "  Linux/Mac: curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh -s -- -b /usr/local/bin"
-    echo "  Or visit: https://aquasecurity.github.io/trivy/latest/getting-started/installation/"
-    exit 1
+if ! command -v trivy &>/dev/null; then
+  echo "❌ Error: Trivy is not installed."
+  echo ""
+  echo "To install Trivy, run:"
+  echo "  Linux/Mac: curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh -s -- -b /usr/local/bin"
+  echo "  Or visit: https://aquasecurity.github.io/trivy/latest/getting-started/installation/"
+  exit 1
 fi
 
 # Run trivy scan on backend directory
