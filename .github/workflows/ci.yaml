@@ -79,10 +79,6 @@ jobs:
         run: |
           docker run --rm --workdir /app/frontend firemerge:frontend-lint npx tsc --noEmit --project tsconfig.app.json
 
-      - name: "Smoke test"
-        run: |
-          docker run --rm firemerge:test .venv/bin/python -c "import firemerge"
-
       - name: "Build production image"
         uses: "docker/build-push-action@bcafcacb16a39f128d818304e6c9c0c18556b85f" # v7
         with:
@@ -90,8 +86,14 @@ jobs:
           push: false
           load: true
           tags: "firemerge:ci"
-          cache-from: "type=gha,scope=prod"
+          cache-from: |
+            type=gha,scope=prod
+            type=gha,scope=test
           cache-to: "type=gha,scope=prod,mode=max"
+
+      - name: "Smoke test"
+        run: |
+          docker run --rm firemerge:ci .venv/bin/python -c "import firemerge"
 
       - name: "Scan for vulnerabilities"
         uses: "aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25" # v0.36.0

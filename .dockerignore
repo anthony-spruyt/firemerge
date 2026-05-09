@@ -22,6 +22,11 @@
 **/*.DS_Store
 **/*.Thumbs.db
 
+# Secrets
+.env
+.env.*
+.secrets/
+
 # Development files
 **/build/
 **/dist/
