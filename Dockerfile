@@ -6,7 +6,7 @@ WORKDIR /app/frontend
 
 COPY frontend/package*.json ./
 
-RUN npm install
+RUN npm ci
 
 COPY frontend/ ./
 
@@ -68,7 +68,8 @@ COPY --from=backend-builder /app/backend/.venv ./.venv
 
 COPY backend/src/ ./src/
 
-# Dependencies are already in .venv from backend-builder; install only the project package
+# .venv from backend-builder already contains compiled native deps (e.g. thefuzz);
+# this sync only installs the project package itself — no gcc needed.
 RUN uv sync --frozen --no-cache --no-dev
 
 COPY --from=frontend-builder /app/frontend/dist/ /app/frontend/dist/
