@@ -23,6 +23,9 @@ jobs:
     name: "Build, test, and scan"
     needs: "lint"
     runs-on: "ubuntu-latest"
+    concurrency:
+      group: "${{ github.workflow }}-build-${{ github.ref }}"
+      cancel-in-progress: true
     steps:
       - name: "Checkout"
         uses: "actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd" # v6
@@ -39,14 +42,38 @@ jobs:
           load: true
           tags: "firemerge:test"
           cache-from: "type=gha"
+          cache-to: "type=gha,mode=max"
 
       - name: "Run type checks"
         run: |
           docker run --rm firemerge:test uv run mypy -p firemerge -p tests
 
+      - name: "Run linting"
+        run: |
+          docker run --rm firemerge:test uv run ruff format --check
+          docker run --rm firemerge:test uv run ruff check
+
       - name: "Run tests"
         run: |
           docker run --rm firemerge:test uv run pytest -vv
+
+      - name: "Build frontend test image"
+        uses: "docker/build-push-action@bcafcacb16a39f128d818304e6c9c0c18556b85f" # v7
+        with:
+          context: "."
+          target: "frontend-builder"
+          push: false
+          load: true
+          tags: "firemerge:frontend-test"
+          cache-from: "type=gha"
+
+      - name: "Run frontend lint"
+        run: |
+          docker run --rm firemerge:frontend-test npx eslint .
+
+      - name: "Run frontend type check"
+        run: |
+          docker run --rm firemerge:frontend-test npx tsc --noEmit --project tsconfig.app.json
 
       - name: "Build production image"
         uses: "docker/build-push-action@bcafcacb16a39f128d818304e6c9c0c18556b85f" # v7

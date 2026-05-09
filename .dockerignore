@@ -27,8 +27,4 @@
 **/build/
 **/dist/
 
-# Test files
-**/tests/
-**/test_*
-
 **/node_modules/

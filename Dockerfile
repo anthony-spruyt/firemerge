@@ -44,7 +44,7 @@ COPY backend/ ./
 
 FROM backend-builder
 
-COPY backend/ ./
+COPY backend/src/ ./src/
 
 COPY --from=frontend-builder /app/frontend/dist/ /app/frontend/dist/
 
