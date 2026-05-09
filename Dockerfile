@@ -20,7 +20,7 @@ FROM frontend-deps AS frontend-builder
 RUN npm run build
 
 
-FROM python:3.14-slim@sha256:1697e8e8d39bf168e177ac6b5fdab6df86d81cfc24dae17dfb96cfc3ef76b4dd AS backend-base
+FROM python:3.13-slim@sha256:d49c1ff87eb98eac346fc250f52925f726eb913c43a92854246dd03c9692ad67 AS backend-base
 
 RUN --mount=type=cache,id=apt-cache,target=/var/cache/apt,sharing=locked \
     --mount=type=cache,id=apt-lib,target=/var/lib/apt,sharing=locked \
@@ -53,13 +53,13 @@ RUN --mount=type=cache,id=apt-cache,target=/var/cache/apt,sharing=locked \
     truncate -s 0 /var/log/apt/* && \
     truncate -s 0 /var/log/dpkg.log
 
-RUN uv sync --frozen --no-cache --no-dev
+RUN uv sync --frozen --no-cache --no-dev --no-install-project
 
 
 FROM backend-builder AS test
 
-RUN uv sync --frozen --no-cache
 COPY backend/ ./
+RUN uv sync --frozen --no-cache
 
 
 FROM backend-base AS production
@@ -67,6 +67,8 @@ FROM backend-base AS production
 COPY --from=backend-builder /app/backend/.venv ./.venv
 
 COPY backend/src/ ./src/
+
+RUN uv sync --frozen --no-cache --no-dev
 
 COPY --from=frontend-builder /app/frontend/dist/ /app/frontend/dist/
 
@@ -78,7 +80,6 @@ USER appuser
 
 EXPOSE 8080
 
-HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
-    CMD curl -f http://localhost:8080/ || exit 1
+HEALTHCHECK NONE
 
-CMD ["uv", "run", "--no-dev", "--frozen", "firemerge"]
+CMD [".venv/bin/firemerge"]
