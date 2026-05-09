@@ -20,7 +20,7 @@ FROM frontend-deps AS frontend-builder
 RUN npm run build
 
 
-FROM python:3.14-slim@sha256:1697e8e8d39bf168e177ac6b5fdab6df86d81cfc24dae17dfb96cfc3ef76b4dd AS backend-builder
+FROM python:3.14-slim@sha256:1697e8e8d39bf168e177ac6b5fdab6df86d81cfc24dae17dfb96cfc3ef76b4dd AS backend-base
 
 RUN --mount=type=cache,id=apt-cache,target=/var/cache/apt,sharing=locked \
     --mount=type=cache,id=apt-lib,target=/var/lib/apt,sharing=locked \
@@ -29,7 +29,7 @@ RUN --mount=type=cache,id=apt-cache,target=/var/cache/apt,sharing=locked \
     apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive \
     apt-get upgrade -y -qq && \
-    apt-get -y install -y -qq --no-install-recommends tzdata-legacy gcc libc6-dev && \
+    apt-get install -y -qq --no-install-recommends tzdata-legacy && \
     truncate -s 0 /var/log/apt/* && \
     truncate -s 0 /var/log/dpkg.log
 
@@ -40,15 +40,31 @@ WORKDIR /app/backend
 COPY backend/pyproject.toml ./
 COPY backend/uv.lock ./
 
+
+FROM backend-base AS backend-builder
+
+RUN --mount=type=cache,id=apt-cache,target=/var/cache/apt,sharing=locked \
+    --mount=type=cache,id=apt-lib,target=/var/lib/apt,sharing=locked \
+    --mount=type=cache,id=debconf,target=/var/cache/debconf,sharing=locked \
+    set -exu && \
+    apt-get update -qq && \
+    DEBIAN_FRONTEND=noninteractive \
+    apt-get install -y -qq --no-install-recommends gcc libc6-dev make && \
+    truncate -s 0 /var/log/apt/* && \
+    truncate -s 0 /var/log/dpkg.log
+
+RUN uv sync --frozen --no-cache --no-dev
+
+
 FROM backend-builder AS test
 
 RUN uv sync --frozen --no-cache
 COPY backend/ ./
 
 
-FROM backend-builder
+FROM backend-base AS production
 
-RUN uv sync --frozen --no-cache --no-dev
+COPY --from=backend-builder /app/backend/.venv ./.venv
 
 COPY backend/src/ ./src/
 
@@ -65,5 +81,4 @@ EXPOSE 8080
 HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
     CMD curl -f http://localhost:8080/ || exit 1
 
-# Default command
 CMD ["uv", "run", "--no-dev", "--frozen", "firemerge"]
