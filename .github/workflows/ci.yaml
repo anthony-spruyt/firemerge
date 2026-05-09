@@ -21,7 +21,6 @@ jobs:
     secrets: "inherit"
   build:
     name: "Build, test, and scan"
-    needs: "lint"
     runs-on: "ubuntu-latest"
     concurrency:
       group: "${{ github.workflow }}-build-${{ github.ref }}"
@@ -41,39 +40,40 @@ jobs:
           push: false
           load: true
           tags: "firemerge:test"
-          cache-from: "type=gha"
-          cache-to: "type=gha,mode=max"
+          cache-from: "type=gha,scope=test"
+          cache-to: "type=gha,scope=test,mode=max"
 
       - name: "Run type checks"
         run: |
-          docker run --rm firemerge:test uv run mypy -p firemerge -p tests
+          docker run --rm --workdir /app/backend firemerge:test uv run mypy -p firemerge -p tests
 
       - name: "Run linting"
         run: |
-          docker run --rm firemerge:test uv run ruff format --check
-          docker run --rm firemerge:test uv run ruff check
+          docker run --rm --workdir /app/backend firemerge:test uv run ruff format --check
+          docker run --rm --workdir /app/backend firemerge:test uv run ruff check
 
       - name: "Run tests"
         run: |
-          docker run --rm firemerge:test uv run pytest -vv
+          docker run --rm --workdir /app/backend firemerge:test uv run pytest -vv
 
-      - name: "Build frontend test image"
+      - name: "Build frontend lint image"
         uses: "docker/build-push-action@bcafcacb16a39f128d818304e6c9c0c18556b85f" # v7
         with:
           context: "."
-          target: "frontend-builder"
+          target: "frontend-lint"
           push: false
           load: true
-          tags: "firemerge:frontend-test"
-          cache-from: "type=gha"
+          tags: "firemerge:frontend-lint"
+          cache-from: "type=gha,scope=frontend"
+          cache-to: "type=gha,scope=frontend,mode=max"
 
       - name: "Run frontend lint"
         run: |
-          docker run --rm firemerge:frontend-test npx eslint .
+          docker run --rm --workdir /app/frontend firemerge:frontend-lint npx eslint .
 
       - name: "Run frontend type check"
         run: |
-          docker run --rm firemerge:frontend-test npx tsc --noEmit --project tsconfig.app.json
+          docker run --rm --workdir /app/frontend firemerge:frontend-lint npx tsc --noEmit --project tsconfig.app.json
 
       - name: "Build production image"
         uses: "docker/build-push-action@bcafcacb16a39f128d818304e6c9c0c18556b85f" # v7
@@ -82,8 +82,8 @@ jobs:
           push: false
           load: true
           tags: "firemerge:ci"
-          cache-from: "type=gha"
-          cache-to: "type=gha,mode=max"
+          cache-from: "type=gha,scope=prod"
+          cache-to: "type=gha,scope=prod,mode=max"
 
       - name: "Scan for vulnerabilities"
         uses: "aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25" # v0.36.0
