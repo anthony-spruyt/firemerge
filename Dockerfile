@@ -68,6 +68,7 @@ COPY --from=backend-builder /app/backend/.venv ./.venv
 
 COPY backend/src/ ./src/
 
+# Dependencies are already in .venv from backend-builder; install only the project package
 RUN uv sync --frozen --no-cache --no-dev
 
 COPY --from=frontend-builder /app/frontend/dist/ /app/frontend/dist/
@@ -80,6 +81,7 @@ USER appuser
 
 EXPOSE 8080
 
+# Kubernetes manages health checks via liveness/readiness probes
 HEALTHCHECK NONE
 
 CMD [".venv/bin/firemerge"]

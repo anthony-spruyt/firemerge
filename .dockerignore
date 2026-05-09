@@ -23,7 +23,6 @@
 **/*.Thumbs.db
 
 # Development files
-**/*.egg-info/
 **/build/
 **/dist/
 
