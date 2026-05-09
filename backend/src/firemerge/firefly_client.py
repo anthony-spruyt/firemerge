@@ -61,7 +61,8 @@ class FireflyClient:
             "X-Trace-Id": str(uuid4()),
         }
         url = f"{self.base_url}/api/{path}"
-        logger.info(f"Requesting {url}, params: {params}, data: {json}")
+        sanitized_url = url.replace("\n", "").replace("\r", "")
+        logger.info("Requesting %s, params: %s, data: %s", sanitized_url, params, json)
         started_at = monotonic()
         assert self._client is not None
         resp = await self._client.request(
@@ -77,7 +78,7 @@ class FireflyClient:
             raise HTTPStatusError(
                 request=resp.request, response=resp, message=resp.text
             )
-        logger.info(f"Got response for {url} in {monotonic() - started_at:0.2f}s")
+        logger.info("Got response for %s in %0.2fs", sanitized_url, monotonic() - started_at)
         return resp
 
     async def _json_request(

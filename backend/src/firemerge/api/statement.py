@@ -46,7 +46,8 @@ async def parse_statement(
         try:
             tz = ZoneInfo(timezone)
         except Exception:
-            logger.warning("Invalid timezone %s, using UTC", timezone, exc_info=True)
+            sanitized_tz = timezone.replace("\n", "").replace("\r", "")
+            logger.warning("Invalid timezone %s, using UTC", sanitized_tz, exc_info=True)
             tz = ZoneInfo("UTC")
 
         # Parse the statement
