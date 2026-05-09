@@ -13,7 +13,7 @@ COPY frontend/ ./
 RUN npm run build
 
 
-FROM python:3.14-slim@sha256:1697e8e8d39bf168e177ac6b5fdab6df86d81cfc24dae17dfb96cfc3ef76b4dd
+FROM python:3.14-slim@sha256:1697e8e8d39bf168e177ac6b5fdab6df86d81cfc24dae17dfb96cfc3ef76b4dd AS backend-builder
 
 RUN --mount=type=cache,id=apt-cache,target=/var/cache/apt,sharing=locked \
     --mount=type=cache,id=apt-lib,target=/var/lib/apt,sharing=locked \
@@ -34,6 +34,15 @@ COPY backend/pyproject.toml ./
 COPY backend/uv.lock ./
 
 RUN uv sync --frozen --no-cache --no-dev
+
+
+FROM backend-builder AS test
+
+RUN uv sync --frozen --no-cache
+COPY backend/ ./
+
+
+FROM backend-builder
 
 COPY backend/ ./
 

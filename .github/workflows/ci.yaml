@@ -19,8 +19,58 @@ jobs:
   lint:
     uses: "anthony-spruyt/repo-operator/.github/workflows/_lint.yaml@main"
     secrets: "inherit"
+  build:
+    name: "Build, test, and scan"
+    needs: "lint"
+    runs-on: "ubuntu-latest"
+    steps:
+      - name: "Checkout"
+        uses: "actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd" # v6
+
+      - name: "Set up Docker Buildx"
+        uses: "docker/setup-buildx-action@4d04d5d9486b7bd6fa91e7baf45bbb4f8b9deedd" # v4
+
+      - name: "Build test image"
+        uses: "docker/build-push-action@bcafcacb16a39f128d818304e6c9c0c18556b85f" # v7
+        with:
+          context: "."
+          target: "test"
+          push: false
+          load: true
+          tags: "firemerge:test"
+          cache-from: "type=gha"
+
+      - name: "Run type checks"
+        run: |
+          docker run --rm firemerge:test uv run mypy -p firemerge -p tests
+
+      - name: "Run tests"
+        run: |
+          docker run --rm firemerge:test uv run pytest -vv
+
+      - name: "Build production image"
+        uses: "docker/build-push-action@bcafcacb16a39f128d818304e6c9c0c18556b85f" # v7
+        with:
+          context: "."
+          push: false
+          load: true
+          tags: "firemerge:ci"
+          cache-from: "type=gha"
+          cache-to: "type=gha,mode=max"
+
+      - name: "Scan for vulnerabilities"
+        uses: "aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25" # v0.36.0
+        with:
+          image-ref: "firemerge:ci"
+          scanners: "vuln,secret,misconfig"
+          format: "table"
+          exit-code: "1"
+          severity: "CRITICAL,HIGH"
+          ignore-unfixed: true
+          trivyignores: ".trivyignore.yaml"
   summary:
     needs:
       - "lint"
+      - "build"
     if: "always()"
     uses: "anthony-spruyt/repo-operator/.github/workflows/_summary.yaml@main"
