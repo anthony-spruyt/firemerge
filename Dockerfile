@@ -12,6 +12,7 @@ COPY frontend/ ./
 
 
 FROM frontend-deps AS frontend-lint
+# Named target for CI lint builds — avoids full Vite production build
 
 
 FROM frontend-deps AS frontend-builder
@@ -28,7 +29,7 @@ RUN --mount=type=cache,id=apt-cache,target=/var/cache/apt,sharing=locked \
     apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive \
     apt-get upgrade -y -qq && \
-    apt-get -y install -y -qq --no-install-recommends tzdata-legacy && \
+    apt-get -y install -y -qq --no-install-recommends tzdata-legacy gcc libc6-dev && \
     truncate -s 0 /var/log/apt/* && \
     truncate -s 0 /var/log/dpkg.log
 
@@ -39,9 +40,6 @@ WORKDIR /app/backend
 COPY backend/pyproject.toml ./
 COPY backend/uv.lock ./
 
-RUN uv sync --frozen --no-cache --no-dev
-
-
 FROM backend-builder AS test
 
 RUN uv sync --frozen --no-cache
@@ -49,6 +47,8 @@ COPY backend/ ./
 
 
 FROM backend-builder
+
+RUN uv sync --frozen --no-cache --no-dev
 
 COPY backend/src/ ./src/
 

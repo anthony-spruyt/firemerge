@@ -22,6 +22,7 @@ jobs:
   build:
     name: "Build, test, and scan"
     runs-on: "ubuntu-latest"
+    timeout-minutes: 15
     concurrency:
       group: "${{ github.workflow }}-build-${{ github.ref }}"
       cancel-in-progress: true
@@ -43,19 +44,6 @@ jobs:
           cache-from: "type=gha,scope=test"
           cache-to: "type=gha,scope=test,mode=max"
 
-      - name: "Run type checks"
-        run: |
-          docker run --rm --workdir /app/backend firemerge:test uv run mypy -p firemerge -p tests
-
-      - name: "Run linting"
-        run: |
-          docker run --rm --workdir /app/backend firemerge:test uv run ruff format --check
-          docker run --rm --workdir /app/backend firemerge:test uv run ruff check
-
-      - name: "Run tests"
-        run: |
-          docker run --rm --workdir /app/backend firemerge:test uv run pytest -vv
-
       - name: "Build frontend lint image"
         uses: "docker/build-push-action@bcafcacb16a39f128d818304e6c9c0c18556b85f" # v7
         with:
@@ -66,6 +54,22 @@ jobs:
           tags: "firemerge:frontend-lint"
           cache-from: "type=gha,scope=frontend"
           cache-to: "type=gha,scope=frontend,mode=max"
+
+      - name: "Run type checks"
+        run: |
+          docker run --rm --workdir /app/backend firemerge:test uv run mypy -p firemerge -p tests
+
+      - name: "Run ruff format check"
+        run: |
+          docker run --rm --workdir /app/backend firemerge:test uv run ruff format --check
+
+      - name: "Run ruff lint"
+        run: |
+          docker run --rm --workdir /app/backend firemerge:test uv run ruff check
+
+      - name: "Run tests"
+        run: |
+          docker run --rm --workdir /app/backend firemerge:test uv run pytest -vv
 
       - name: "Run frontend lint"
         run: |
