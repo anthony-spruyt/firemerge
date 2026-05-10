@@ -45,6 +45,9 @@ target-version = "py313"
 [tool.ruff.lint]
 select = ["E", "F", "I"]
 
+[tool.ruff.lint.isort]
+known-first-party = ["firemerge"]
+
 [tool.mypy]
 plugins = [
   "pydantic.mypy"
