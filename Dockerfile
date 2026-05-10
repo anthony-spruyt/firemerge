@@ -10,7 +10,6 @@ RUN npm ci
 
 COPY frontend/ ./
 
-
 FROM frontend-deps AS frontend-lint
 # Named target for CI lint builds — avoids full Vite production build
 
