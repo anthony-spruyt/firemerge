@@ -37,7 +37,7 @@ export const ExportConfig = ({
     return (
       <Accordion>
         <AccordionSummary expandIcon={<ExpandMore />}>
-          <Box display="flex" alignItems="center" gap={1}>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
             <FileDownload />
             <Typography variant="h6">Export Configuration</Typography>
           </Box>
@@ -63,14 +63,16 @@ export const ExportConfig = ({
   return (
     <Accordion>
       <AccordionSummary expandIcon={<ExpandMore />}>
-        <Box display="flex" alignItems="center" gap={1}>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
           <FileDownload />
           <Typography variant="h6">Export Configuration</Typography>
         </Box>
       </AccordionSummary>
       <AccordionDetails>
         <Box>
-          <Box display="flex" alignItems="center" justifyContent="space-between" mb={2}>
+          <Box
+            sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 2 }}
+          >
             <Typography variant="h6">Export Configuration</Typography>
             <Button variant="outlined" color="error" onClick={onRemoveExportSettings} size="small">
               Remove Export Settings
@@ -83,7 +85,7 @@ export const ExportConfig = ({
           {transactionTypes.map((transactionType) => (
             <Accordion key={transactionType} sx={{ mb: 2 }}>
               <AccordionSummary expandIcon={<ExpandMore />}>
-                <Box display="flex" alignItems="center" gap={1}>
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                   <FileDownload />
                   <Typography variant="h6" sx={{ textTransform: 'capitalize' }}>
                     {transactionType} Export Fields
@@ -106,11 +108,18 @@ export const ExportConfig = ({
                   </Box>
                 ) : (
                   <Box>
-                    <Box display="flex" alignItems="center" justifyContent="space-between" mb={2}>
+                    <Box
+                      sx={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        mb: 2,
+                      }}
+                    >
                       <Typography variant="subtitle1">
                         Configure export fields for {transactionType} transactions
                       </Typography>
-                      <Box display="flex" gap={1}>
+                      <Box sx={{ display: 'flex', gap: 1 }}>
                         <Button
                           variant="outlined"
                           startIcon={<Add />}

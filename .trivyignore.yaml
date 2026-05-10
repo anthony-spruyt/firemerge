@@ -1,4 +1,4 @@
-# Path-specific trivy ignores
+# Path-specific trivy ignores (placeholder — add entries as needed)
 # https://trivy.dev/latest/docs/configuration/filtering
 
 vulnerabilities: null

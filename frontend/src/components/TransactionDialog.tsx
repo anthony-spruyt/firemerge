@@ -37,7 +37,7 @@ function TransactionForm({
     <Grid container spacing={2}>
       <Grid size={{ xs: 12, md: 6 }}>
         <Stack direction="column" spacing={2}>
-          <Stack direction="row" justifyContent="space-between" spacing={2}>
+          <Stack direction="row" spacing={2} sx={{ justifyContent: 'space-between' }}>
             <TransactionTypeInput transaction={transaction} setTransaction={setTransaction} />
           </Stack>
           <DescriptionInput

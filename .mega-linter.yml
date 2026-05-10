@@ -5,10 +5,15 @@
 # Add project-specific linters below:
 # ENABLE_LINTERS:
 #   - TYPESCRIPT_ES
-#   - PYTHON_PYLINT
+#   - PYTHON_MYPY
+
+ENABLE_LINTERS:
+  - "PYTHON_RUFF"
 
 EXTENDS:
   - ".mega-linter-base.yml"
 CONFIG_PROPERTIES_TO_APPEND:
   - "ENABLE_LINTERS"
+PYTHON_RUFF_CONFIG_FILE: "backend/pyproject.toml"
+PYTHON_RUFF_FILTER_REGEX_INCLUDE: "(backend/)"
 SPELL_LYCHEE_FILTER_REGEX_EXCLUDE: "(package-lock\\.json|frontend/index\\.html)"
