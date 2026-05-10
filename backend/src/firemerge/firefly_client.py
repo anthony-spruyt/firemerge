@@ -78,7 +78,8 @@ class FireflyClient:
             raise HTTPStatusError(
                 request=resp.request, response=resp, message=resp.text
             )
-        logger.info("Got response for %s in %0.2fs", sanitized_url, monotonic() - started_at)
+        elapsed = monotonic() - started_at
+        logger.info("Got response for %s in %0.2fs", sanitized_url, elapsed)
         return resp
 
     async def _json_request(
