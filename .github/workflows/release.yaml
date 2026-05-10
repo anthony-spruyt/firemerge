@@ -236,7 +236,9 @@ jobs:
           {
             echo 'RELEASE_NOTES<<NOTES_EOF'
 
+            # shellcheck disable=SC2016
             printf '`%s:%s`\n' "${IMAGE}" "${VERSION}"
+            # shellcheck disable=SC2016
             printf '`%s`\n\n' "${DIGEST}"
             printf '```bash\n'
             printf 'docker pull %s:%s\n' "${IMAGE}" "${VERSION}"
