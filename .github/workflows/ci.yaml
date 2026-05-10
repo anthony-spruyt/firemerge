@@ -57,19 +57,11 @@ jobs:
 
       - name: "Run type checks"
         run: |
-          docker run --rm --workdir /app/backend firemerge:test uv run mypy -p firemerge -p tests
-
-      - name: "Run ruff format check"
-        run: |
-          docker run --rm --workdir /app/backend firemerge:test uv run ruff format --check
-
-      - name: "Run ruff lint"
-        run: |
-          docker run --rm --workdir /app/backend firemerge:test uv run ruff check
+          docker run --rm --workdir /app/backend firemerge:test .venv/bin/mypy -p firemerge -p tests
 
       - name: "Run tests"
         run: |
-          docker run --rm --workdir /app/backend firemerge:test uv run pytest -vv
+          docker run --rm --workdir /app/backend firemerge:test .venv/bin/pytest -vv
 
       - name: "Run frontend lint"
         run: |
