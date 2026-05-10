@@ -1,8 +1,32 @@
 venv/
 *.egg-info/
-__pycache__/
-.env
 statement.json
 .chrome/
 .idea/
+
+# Node
+node_modules/
+
+# Prevent accidental secret commits
+.env
+.env.*
+.secrets/
+
+# Python
+__pycache__/
+*.py[cod]
+.mypy_cache/
+.ruff_cache/
+
+# Claude
+.claude/settings.local.json
+.claude/worktrees/
+
+# Worktrees
+.worktrees/
+
+# SSH agent
+agent.sock
+
+# MegaLinter
 .output/

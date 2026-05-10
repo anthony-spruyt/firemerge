@@ -50,7 +50,7 @@ export const Header = ({
       sx={{ cursor: currentAccount ? 'pointer' : 'default' }}
     >
       <Toolbar sx={{ py: 2 }}>
-        <Stack direction="row" spacing={3} alignItems="center" width="100%">
+        <Stack direction="row" spacing={3} sx={{ alignItems: 'center', width: '100%' }}>
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
             <Box sx={{ borderRadius: '50%', overflow: 'hidden', height: '3rem', width: '3rem' }}>
               <Logo width={'100%'} height={'100%'} fill="blue" />
@@ -61,11 +61,17 @@ export const Header = ({
               </Typography>
             )}
           </Box>
-          <Grid container spacing={2} alignItems="center" justifyContent="center" width="100%">
+          <Grid
+            container
+            spacing={2}
+            sx={{ alignItems: 'center', justifyContent: 'center', width: '100%' }}
+          >
             <Grid size={{ xs: 12, sm: 6 }}>
               {currentAccount ? (
-                <Stack direction="row" spacing={1} alignItems="center">
-                  <Typography overflow="hidden" textOverflow="ellipsis" whiteSpace="nowrap">
+                <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
+                  <Typography
+                    sx={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}
+                  >
                     {currentAccount.name}
                   </Typography>
                   <Typography variant="subtitle2">
@@ -76,7 +82,7 @@ export const Header = ({
                 <Typography>No account selected</Typography>
               )}
             </Grid>
-            <Grid size={{ xs: 12, sm: 6 }} display={showStatementInfo ? 'block' : 'none'}>
+            <Grid size={{ xs: 12, sm: 6 }} sx={{ display: showStatementInfo ? 'block' : 'none' }}>
               {currentAccount && statementInfo !== undefined ? (
                 <Stack direction="column" spacing={1}>
                   <Typography>{statementInfo.num_transactions} transactions</Typography>

@@ -20,7 +20,7 @@ export const BlacklistConfig = ({ settings, onUpdate }: BlacklistConfigProps) =>
   return (
     <Accordion>
       <AccordionSummary expandIcon={<ExpandMore />}>
-        <Box display="flex" alignItems="center" gap={1}>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
           <Block />
           <Typography variant="h6">Blacklist Settings</Typography>
         </Box>

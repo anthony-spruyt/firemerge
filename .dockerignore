@@ -4,7 +4,6 @@
 
 # Python
 **/__pycache__/
-**/*.egg-info/
 **/.mypy_cache/
 **/.ruff_cache/
 
@@ -22,13 +21,14 @@
 **/*.DS_Store
 **/*.Thumbs.db
 
+# Secrets
+.env
+.env.*
+.secrets/
+
 # Development files
 **/*.egg-info/
 **/build/
 **/dist/
-
-# Test files
-**/tests/
-**/test_*
 
 **/node_modules/

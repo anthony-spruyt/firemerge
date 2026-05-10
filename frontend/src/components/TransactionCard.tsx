@@ -88,7 +88,7 @@ export const TransactionCard = ({
           title={<TransactionHeader transaction={transaction} currentAccount={currentAccount} />}
           subheader={<TransactionSubheader transaction={transaction} />}
           action={
-            <Stack direction="row" spacing={2} alignItems="center">
+            <Stack direction="row" spacing={2} sx={{ alignItems: 'center' }}>
               {!!transaction.candidates?.length && (
                 <Badge badgeContent={transaction.candidates.length} color="primary">
                   <RequestQuoteOutlined />

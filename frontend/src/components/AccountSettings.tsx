@@ -125,7 +125,7 @@ export const AccountSettingsDialog = ({
   return (
     <Dialog open={open} onClose={onClose} maxWidth="lg" fullWidth aria-hidden={!open}>
       <DialogTitle>
-        <Box display="flex" alignItems="center" gap={1}>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
           <Settings />
           Account Settings: {account.name}
         </Box>

@@ -88,7 +88,7 @@ export const StatementParserConfig = ({
   return (
     <Accordion defaultExpanded>
       <AccordionSummary expandIcon={<ExpandMore />}>
-        <Box display="flex" alignItems="center" gap={1}>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
           <Input />
           <Typography variant="h6">Statement Parser Configuration</Typography>
         </Box>
@@ -246,7 +246,9 @@ export const StatementParserConfig = ({
 
         {/* Column Mapping */}
         <Box>
-          <Box display="flex" alignItems="center" justifyContent="space-between" mb={2}>
+          <Box
+            sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 2 }}
+          >
             <Typography variant="h6">Column Mapping</Typography>
             <Button variant="outlined" onClick={addColumn} size="small">
               Add Column
