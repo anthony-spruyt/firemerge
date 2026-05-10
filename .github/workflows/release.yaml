@@ -33,10 +33,17 @@ jobs:
   resolve-version:
     name: "Resolve version"
     runs-on: "ubuntu-latest"
+    timeout-minutes: 5
     outputs:
       tag: "${{ steps.bump.outputs.tag }}"
       version: "${{ steps.bump.outputs.version }}"
     steps:
+      - name: "Verify branch"
+        if: "github.ref_name != 'main'"
+        run: |
+          echo "::error::Releases must be triggered from the main branch"
+          exit 1
+
       - name: "Checkout"
         uses: "actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd" # v6
         with:
@@ -48,7 +55,7 @@ jobs:
         env:
           BUMP: "${{ inputs.bump }}"
         run: |
-          LATEST=$(git tag --list "v*" --sort=-v:refname | head -n 1)
+          LATEST=$(git tag --list --sort=-v:refname | grep -E '^v?[0-9]+\.[0-9]+\.[0-9]+$' | head -n 1)
 
           if [ -z "$LATEST" ]; then
             CURRENT="0.0.0"
@@ -66,8 +73,17 @@ jobs:
 
           VERSION="${MAJOR}.${MINOR}.${PATCH}"
           echo "version=$VERSION" >> "$GITHUB_OUTPUT"
-          echo "tag=v$VERSION" >> "$GITHUB_OUTPUT"
-          echo "::notice::Bumping $BUMP: ${LATEST:-v0.0.0} -> v$VERSION"
+          echo "tag=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "::notice::Bumping $BUMP: ${LATEST:-0.0.0} -> $VERSION"
+
+      - name: "Verify tag is available"
+        env:
+          TAG: "${{ steps.bump.outputs.tag }}"
+        run: |
+          if git ls-remote --tags origin "refs/tags/$TAG" | grep -q .; then
+            echo "::error::Tag $TAG already exists on remote"
+            exit 1
+          fi
 
   test:
     name: "Test"
@@ -124,6 +140,7 @@ jobs:
       - "resolve-version"
       - "test"
     runs-on: "ubuntu-latest"
+    timeout-minutes: 30
     steps:
       - name: "Checkout"
         uses: "actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd" # v6
@@ -186,6 +203,7 @@ jobs:
           sbom: true
           provenance: "mode=max"
 
+      # BuildKit provenance (in-toto) + Sigstore attestation for defense-in-depth
       - name: "Generate provenance attestation"
         uses: "actions/attest-build-provenance@a2bbfa25375fe432b6a289bc6b6cd05ecd0c4c32" # v4
         with:
@@ -213,7 +231,7 @@ jobs:
           SERVER_URL: "${{ github.server_url }}"
           REPO: "${{ github.repository }}"
         run: |
-          PREV_TAG=$(git tag --list "v*" --sort=-v:refname | sed -n '2p')
+          PREV_TAG=$(git tag --list --sort=-v:refname | grep -E '^v?[0-9]+\.[0-9]+\.[0-9]+$' | sed -n '2p')
 
           {
             echo 'RELEASE_NOTES<<NOTES_EOF'
@@ -229,7 +247,7 @@ jobs:
             if [ -n "$PREV_TAG" ]; then
               git log "${PREV_TAG}..HEAD" --pretty=format:'- %s' --no-merges
             else
-              git log --pretty=format:'- %s' --no-merges
+              printf '- Initial release\n'
             fi
             printf '\n'
 
