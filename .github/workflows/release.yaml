@@ -20,7 +20,6 @@ permissions:
   packages: "write"
   id-token: "write"
   attestations: "write"
-  security-events: "write"
 
 concurrency:
   group: "release"
@@ -178,13 +177,6 @@ jobs:
           tags: "firemerge:release"
           cache-from: "type=gha,scope=prod"
           cache-to: "type=gha,scope=prod,mode=max"
-
-      - name: "Scan for vulnerabilities"
-        uses: "anthony-spruyt/repo-operator/.github/actions/trivy-scan@main"
-        with:
-          image-ref: "firemerge:release"
-          trivyignores: ".trivyignore.yaml"
-          category: "trivy"
 
       - name: "Push image"
         id: "push"
