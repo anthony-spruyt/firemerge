@@ -20,6 +20,7 @@ permissions:
   packages: "write"
   id-token: "write"
   attestations: "write"
+  security-events: "write"
 
 concurrency:
   group: "release"
@@ -179,15 +180,11 @@ jobs:
           cache-to: "type=gha,scope=prod,mode=max"
 
       - name: "Scan for vulnerabilities"
-        uses: "aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25" # v0.36.0
+        uses: "anthony-spruyt/repo-operator/.github/actions/trivy-scan@main"
         with:
           image-ref: "firemerge:release"
-          scanners: "vuln,secret,misconfig"
-          format: "table"
-          exit-code: "1"
-          severity: "CRITICAL,HIGH"
-          ignore-unfixed: true
           trivyignores: ".trivyignore.yaml"
+          category: "trivy"
 
       - name: "Push image"
         id: "push"
