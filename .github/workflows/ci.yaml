@@ -16,11 +16,36 @@ permissions:
   security-events: "write"
   statuses: "write"
 jobs:
+  changes:
+    name: "Detect changes"
+    runs-on: "ubuntu-latest"
+    timeout-minutes: 2
+    outputs:
+      app: "${{ steps.filter.outputs.app }}"
+    steps:
+      - name: "Checkout"
+        uses: "actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd" # v6
+
+      - name: "Check paths"
+        id: "filter"
+        uses: "dorny/paths-filter@fbd0ab8f3e69293af611ebaee6363fc25e6d187d" # v4.0.1
+        with:
+          filters: |
+            app:
+              - 'backend/**'
+              - 'frontend/**'
+              - 'Dockerfile'
+              - '.dockerignore'
+              - 'docker-compose.yml'
+              - '.trivyignore.yaml'
+              - 'trivy.yaml'
   lint:
     uses: "anthony-spruyt/repo-operator/.github/workflows/_lint.yaml@main"
     secrets: "inherit"
   build:
     name: "Build, test, and scan"
+    needs: "changes"
+    if: "needs.changes.outputs.app == 'true'"
     runs-on: "ubuntu-latest"
     timeout-minutes: 15
     concurrency:
@@ -95,6 +120,7 @@ jobs:
           category: "trivy"
   summary:
     needs:
+      - "changes"
       - "lint"
       - "build"
     if: "always()"
