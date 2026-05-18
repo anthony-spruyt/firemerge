@@ -1,6 +1,10 @@
 # Path-specific trivy ignores (placeholder — add entries as needed)
 # https://trivy.dev/latest/docs/configuration/filtering
 
-vulnerabilities: null
+vulnerabilities:
+  - id: CVE-2026-4878
+    statement: Pre-existing vulnerability in firemerge base image (libcap2)
+  - id: CVE-2026-29111
+    statement: Pre-existing vulnerability in firemerge base image (libudev1)
 secrets: null
 misconfigurations: null
