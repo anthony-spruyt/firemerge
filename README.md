@@ -40,9 +40,9 @@ Firemerge operates as a web-based interface that bridges the gap between your ba
 ### 4. **Semi-Automated Workflow**
 
 1. Upload your bank statement
-1. Review the parsed transactions
-1. Accept or modify the suggested metadata
-1. Push the enriched transactions to Firefly III
+2. Review the parsed transactions
+3. Accept or modify the suggested metadata
+4. Push the enriched transactions to Firefly III
 
 ### 5. **Similarity lookup**
 
@@ -94,14 +94,14 @@ transaction, to be able to correct it if needed.
    cd firemerge
    ```
 
-1. **Create environment file:**
+2. **Create environment file:**
 
    ```bash
    cp env.example .env
    # Edit .env with your Firefly III credentials
    ```
 
-1. **Run with Docker Compose:**
+3. **Run with Docker Compose:**
 
    Add the following to your _docker_compose.yml_, to the `services` section:
 
