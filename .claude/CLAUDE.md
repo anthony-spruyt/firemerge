@@ -36,11 +36,11 @@ cd backend && uv run pytest tests/test_parser.py::test_function_name -vv
 
 ## Environment Variables
 
-| Variable | Required | Purpose |
-|---|---|---|
-| `FIREFLY_BASE_URL` | Yes | Firefly III instance URL |
-| `FIREFLY_TOKEN` | Yes | Firefly III API bearer token |
-| `LISTEN_URL` | No | Backend listen address (default: `0.0.0.0:8080`) |
+| Variable           | Required | Purpose                                          |
+| ------------------ | -------- | ------------------------------------------------ |
+| `FIREFLY_BASE_URL` | Yes      | Firefly III instance URL                         |
+| `FIREFLY_TOKEN`    | Yes      | Firefly III API bearer token                     |
+| `LISTEN_URL`       | No       | Backend listen address (default: `0.0.0.0:8080`) |
 
 Copy `env.example` → `.env` and fill in values. Backend loads `.env` via `make run-backend`.
 
@@ -54,17 +54,17 @@ Copy `env.example` → `.env` and fill in values. Backend loads `.env` via `make
 
 ### Backend (`backend/src/firemerge/`)
 
-| Module | Purpose |
-|---|---|
-| `api/deps.py` | FastAPI dependency injection via `Annotated[T, Depends()]` — lifespan context manages `httpx.AsyncClient` and `FireflyClient` |
-| `api/statement.py` | Statement upload, parsing, parser-settings guessing |
-| `api/transactions.py` | Transaction merge, save, description search |
-| `api/accounts.py` | Account listing and settings CRUD |
-| `model/` | Pydantic models — uses discriminated unions for `StatementFormatSettings` (CSV/XLSX/PDF) and `ExportField` types |
-| `statement/reader.py` | Abstract factory `BaseStatementReader` with CSV/XLSX/PDF implementations |
-| `statement/parser.py` | `StatementParser`: header detection, row parsing, IBAN filtering, document joining (debit/credit rows with matching doc_number), blacklist filtering |
-| `merge.py` | Fuzzy matching via `thefuzz` — score cutoff 93/100, max 10 candidates, deduplicates by keeping highest-scored per unique transaction |
-| `firefly_client.py` | Async Firefly III client — paginated GET via async generator, `@async_collect` decorator converts to list, 300s timeout, stores account settings as Firefly III attachments (`firemerge-settings.json`) |
+| Module                | Purpose                                                                                                                                                                                                 |
+| --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `api/deps.py`         | FastAPI dependency injection via `Annotated[T, Depends()]` — lifespan context manages `httpx.AsyncClient` and `FireflyClient`                                                                           |
+| `api/statement.py`    | Statement upload, parsing, parser-settings guessing                                                                                                                                                     |
+| `api/transactions.py` | Transaction merge, save, description search                                                                                                                                                             |
+| `api/accounts.py`     | Account listing and settings CRUD                                                                                                                                                                       |
+| `model/`              | Pydantic models — uses discriminated unions for `StatementFormatSettings` (CSV/XLSX/PDF) and `ExportField` types                                                                                        |
+| `statement/reader.py` | Abstract factory `BaseStatementReader` with CSV/XLSX/PDF implementations                                                                                                                                |
+| `statement/parser.py` | `StatementParser`: header detection, row parsing, IBAN filtering, document joining (debit/credit rows with matching doc_number), blacklist filtering                                                    |
+| `merge.py`            | Fuzzy matching via `thefuzz` — score cutoff 93/100, max 10 candidates, deduplicates by keeping highest-scored per unique transaction                                                                    |
+| `firefly_client.py`   | Async Firefly III client — paginated GET via async generator, `@async_collect` decorator converts to list, 300s timeout, stores account settings as Firefly III attachments (`firemerge-settings.json`) |
 
 ### Frontend (`frontend/src/`)
 
