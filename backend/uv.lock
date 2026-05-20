@@ -1,5 +1,5 @@
 version = 1
-revision = 3
+revision = 4
 requires-python = ">=3.13"
 
 [[package]]
@@ -359,11 +359,11 @@ wheels = [
 
 [[package]]
 name = "idna"
-version = "3.10"
+version = "3.15"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/f1/70/7703c29685631f5a7590aa73f1f1d3fa9a380e654b86af429e0934a32f7d/idna-3.10.tar.gz", hash = "sha256:12f65c9b470abda6dc35cf8e63cc574b1c52b11df2c86030af0ac09b01b13ea9", size = 190490, upload-time = "2024-09-15T18:07:39.745Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/7e/9f/b0f2f3791bb4e2b9d05f1d47d88b5b07c79a5d22e445c68ce8a7d67ec895/idna-3.15.tar.gz", hash = "sha256:632d4d8509a05693244e36bfb9c6c2f6e5b4d427c561fe1d7f4b9d32ef9e2e89", size = 190521, upload-time = "2026-01-14T10:36:49.102Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/76/c6/c88e154df9c4e1a2a66ccf0005a88dfb2650c1dffb6f5ce603dfbd452ce3/idna-3.10-py3-none-any.whl", hash = "sha256:946d195a0d259cbba61165e88e65941f16e9b36ea6ddb97f00452bae8b1287d3", size = 70442, upload-time = "2024-09-15T18:07:37.964Z" },
+    { url = "https://files.pythonhosted.org/packages/9b/81/46b1e1950e299a3bf59190986e2759537747d58d043ef6c96ef7f4a5430e/idna-3.15-py3-none-any.whl", hash = "sha256:514e120aaf985e3e7f7e35ef4c8d9b614a83f9b87e3daaf7524c6c4e40a5de5d", size = 70488, upload-time = "2026-01-14T10:36:47.603Z" },
 ]
 
 [[package]]
