@@ -19,7 +19,7 @@ FROM frontend-deps AS frontend-builder
 RUN npm run build
 
 
-FROM python:3.13-slim@sha256:0bce18a835a2d7975cb8765dad3bf4d2f0cc7aadb7d3414ce2cba8ef4004bb93 AS backend-base
+FROM python:3.13-slim@sha256:9ca3cf9a53a4087afa82efa7cfae3c9d96858a0f9a72ef7acb0119848708d87e AS backend-base
 
 RUN --mount=type=cache,id=apt-cache,target=/var/cache/apt,sharing=locked \
     --mount=type=cache,id=apt-lib,target=/var/lib/apt,sharing=locked \
