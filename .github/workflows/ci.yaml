@@ -59,7 +59,7 @@ jobs:
         uses: "docker/setup-buildx-action@4d04d5d9486b7bd6fa91e7baf45bbb4f8b9deedd" # v4
 
       - name: "Build test image"
-        uses: "docker/build-push-action@bcafcacb16a39f128d818304e6c9c0c18556b85f" # v7
+        uses: "docker/build-push-action@f9f3042f7e2789586610d6e8b85c8f03e5195baf" # v7
         with:
           context: "."
           target: "test"
@@ -70,7 +70,7 @@ jobs:
           cache-to: "type=gha,scope=test,mode=max"
 
       - name: "Build frontend lint image"
-        uses: "docker/build-push-action@bcafcacb16a39f128d818304e6c9c0c18556b85f" # v7
+        uses: "docker/build-push-action@f9f3042f7e2789586610d6e8b85c8f03e5195baf" # v7
         with:
           context: "."
           target: "frontend-lint"
@@ -97,7 +97,7 @@ jobs:
           docker run --rm --workdir /app/frontend firemerge:frontend-lint npx tsc --noEmit --project tsconfig.app.json
 
       - name: "Build production image"
-        uses: "docker/build-push-action@bcafcacb16a39f128d818304e6c9c0c18556b85f" # v7
+        uses: "docker/build-push-action@f9f3042f7e2789586610d6e8b85c8f03e5195baf" # v7
         with:
           context: "."
           push: false
