@@ -143,6 +143,12 @@ jobs:
     runs-on: "ubuntu-latest"
     timeout-minutes: 30
     steps:
+      - name: "Checkout"
+        uses: "actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd" # v6
+        with:
+          fetch-depth: 0
+          fetch-tags: true
+
       - name: "Capture previous tag"
         id: "prev"
         run: |
@@ -150,12 +156,6 @@ jobs:
             awk '{ n=$0; gsub(/^v/,"",n); print n" "$0 }' | sort -k1,1 -V | \
             awk '{print $2}' | tail -n 1)
           echo "prev_tag=$PREV_TAG" >> "$GITHUB_OUTPUT"
-
-      - name: "Checkout"
-        uses: "actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd" # v6
-        with:
-          fetch-depth: 0
-          fetch-tags: true
 
       - name: "Set up Docker Buildx"
         uses: "docker/setup-buildx-action@d7f5e7f509e45cec5c76c4d5afdd7de93d0b3df5" # v4
@@ -229,7 +229,6 @@ jobs:
           SERVER_URL: "${{ github.server_url }}"
           REPO: "${{ github.repository }}"
         run: |
-          run: |
           PREV_TAG="${{ steps.prev.outputs.prev_tag }}"
 
           {
