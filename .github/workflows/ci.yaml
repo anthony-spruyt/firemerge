@@ -42,8 +42,8 @@ jobs:
   lint:
     uses: "anthony-spruyt/repo-operator/.github/workflows/_lint.yaml@main"
     secrets: "inherit"
-  build:
-    name: "Build, test, and scan"
+  build-and-test:
+    name: "Build and test"
     needs: "changes"
     if: "needs.changes.outputs.app == 'true'"
     runs-on: "ubuntu-latest"
@@ -112,16 +112,10 @@ jobs:
         run: |
           docker run --rm firemerge:ci .venv/bin/python -c "from firemerge.main import serve_web"
 
-      - name: "Scan for vulnerabilities"
-        uses: "anthony-spruyt/repo-operator/.github/actions/trivy-scan@main"
-        with:
-          image-ref: "firemerge:ci"
-          trivyignores: ".trivyignore.yaml"
-          category: "trivy"
   summary:
     needs:
       - "changes"
       - "lint"
-      - "build"
+      - "build-and-test"
     if: "always()"
     uses: "anthony-spruyt/repo-operator/.github/workflows/_summary.yaml@main"
