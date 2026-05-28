@@ -10,6 +10,7 @@
 ### Fix
 
 - **Dockerfile**: fix healthcheck
+- **backend**: fix statement parser duplicate doc-number handling
 
 ## 0.5.2 (2025-11-14)
 

@@ -122,7 +122,7 @@ class StatementParser:
                     logger.warning(f"Duplicate doc number: {doc_number}")
                     transaction = self._parse_row(row)
                 else:
-                    print(f"Joining row {join_row} by {doc_number} with row {row}")
+                    logger.debug("Joining rows by doc_number=%s", doc_number)
                     transaction = self._parse_row(row, join_row)
             else:
                 transaction = self._parse_row(row)
