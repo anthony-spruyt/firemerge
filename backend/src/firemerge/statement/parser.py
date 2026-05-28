@@ -96,13 +96,16 @@ class StatementParser:
         if join_col := self.role_cols.get(ColumnRole.DOC_NUMBER):
             assert iban_col is not None
             rows = list(rows)
-            join_rows = {
-                row[join_col.index]: row
-                for row in rows
-                if row[join_col.index] and row[iban_col.index] != self.account.iban
-            }
+            join_rows = {}
+            duplicates = []
+            for row in rows:
+                if (doc_number := row[join_col.index]) and row[iban_col.index] != self.account.iban and self._get_amount(row):
+                    if doc_number in join_rows:
+                        duplicates.append(doc_number)
+                    join_rows[doc_number] = row
         else:
             join_rows = None
+            duplicates = None
 
         for row, next_row in pairwise(chain(rows, [None])):
             assert row is not None  # only next_row can be None
@@ -115,7 +118,12 @@ class StatementParser:
                 and (doc_number := row[join_col.index])
                 and (join_row := join_rows.get(doc_number))
             ):
-                transaction = self._parse_row(row, join_row)
+                if duplicates and doc_number in duplicates:
+                    logger.warning(f"Duplicate doc number: {doc_number}")
+                    transaction = self._parse_row(row)
+                else:
+                    print(f"Joining row {join_row} by {doc_number} with row {row}")
+                    transaction = self._parse_row(row, join_row)
             else:
                 transaction = self._parse_row(row)
 
