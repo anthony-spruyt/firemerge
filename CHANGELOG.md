@@ -5,6 +5,13 @@
 - **deps**: resolve wheel security vulnerability (CVE-2026-24049)
 - **tests**: fix broken test assertions and mocks
 
+## 0.5.3 (2026-03-31)
+
+### Fix
+
+- **Dockerfile**: fix healthcheck
+- **backend**: fix statement parser duplicate doc-number handling
+
 ## 0.5.2 (2025-11-14)
 
 ### Fix

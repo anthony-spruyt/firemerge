@@ -4,7 +4,7 @@ import reactHooks from 'eslint-plugin-react-hooks';
 import reactRefresh from 'eslint-plugin-react-refresh';
 import tseslint from 'typescript-eslint';
 import { globalIgnores } from 'eslint/config';
-import prettier from 'eslint-plugin-prettier';
+import prettierRecommended from 'eslint-plugin-prettier/recommended';
 
 export default tseslint.config([
   globalIgnores(['dist']),
@@ -15,12 +15,11 @@ export default tseslint.config([
       tseslint.configs.recommended,
       reactHooks.configs.flat['recommended-latest'],
       reactRefresh.configs.vite,
+      prettierRecommended,
     ],
-    plugins: {
-      prettier,
-    },
     rules: {
-      ...prettier.configs.recommended.rules,
+      'arrow-body-style': 'off',
+      'prefer-arrow-callback': 'off',
       'react-hooks/set-state-in-effect': 'off',
       'react-hooks/refs': 'off',
     },
