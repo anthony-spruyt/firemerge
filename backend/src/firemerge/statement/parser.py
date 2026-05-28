@@ -99,7 +99,11 @@ class StatementParser:
             join_rows = {}
             duplicates = []
             for row in rows:
-                if (doc_number := row[join_col.index]) and row[iban_col.index] != self.account.iban and self._get_amount(row):
+                if (
+                    (doc_number := row[join_col.index])
+                    and row[iban_col.index] != self.account.iban
+                    and self._get_amount(row)
+                ):
                     if doc_number in join_rows:
                         duplicates.append(doc_number)
                     join_rows[doc_number] = row
