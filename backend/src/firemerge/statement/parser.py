@@ -93,22 +93,19 @@ class StatementParser:
     ) -> Iterable[StatementTransaction]:
         iban_col = self.role_cols.get(ColumnRole.IBAN)
         # prepare rows for join if doc number is present
-        join_rows: dict[object, Sequence[ValueType]] | None = None
-        duplicates: set[object] | None = None
         if join_col := self.role_cols.get(ColumnRole.DOC_NUMBER):
             assert iban_col is not None
             rows = list(rows)
             join_rows = {}
-            duplicates = set()
-            for scan_row in rows:
-                if (
-                    (doc_number := scan_row[join_col.index])
-                    and scan_row[iban_col.index] != self.account.iban
-                    and self._get_amount(scan_row)
-                ):
+            duplicates = []
+            for row in rows:
+                if (doc_number := row[join_col.index]) and row[iban_col.index] != self.account.iban and self._get_amount(row):
                     if doc_number in join_rows:
-                        duplicates.add(doc_number)
-                    join_rows[doc_number] = scan_row
+                        duplicates.append(doc_number)
+                    join_rows[doc_number] = row
+        else:
+            join_rows = None
+            duplicates = None
 
         for row, next_row in pairwise(chain(rows, [None])):
             assert row is not None  # only next_row can be None
@@ -122,10 +119,10 @@ class StatementParser:
                 and (join_row := join_rows.get(doc_number))
             ):
                 if duplicates and doc_number in duplicates:
-                    logger.warning("Duplicate doc number: %s", doc_number)
+                    logger.warning(f"Duplicate doc number: {doc_number}")
                     transaction = self._parse_row(row)
                 else:
-                    logger.debug("Joining rows by doc_number=%s", doc_number)
+                    print(f"Joining row {join_row} by {doc_number} with row {row}")
                     transaction = self._parse_row(row, join_row)
             else:
                 transaction = self._parse_row(row)
