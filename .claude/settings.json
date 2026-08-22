@@ -91,7 +91,6 @@
     "security-hooks@aspruyt-plugins": true,
     "best-practices@aspruyt-plugins": true,
     "superpowers@claude-plugins-official": false,
-    "caveman@caveman": true,
     "context7@claude-plugins-official": false,
     "claude-code-setup@claude-plugins-official": false,
     "claude-md-management@claude-plugins-official": false,
@@ -106,13 +105,6 @@
       "source": {
         "source": "github",
         "repo": "anthony-spruyt/claude-plugins"
-      },
-      "autoUpdate": true
-    },
-    "caveman": {
-      "source": {
-        "source": "github",
-        "repo": "JuliusBrussee/caveman"
       },
       "autoUpdate": true
     }
